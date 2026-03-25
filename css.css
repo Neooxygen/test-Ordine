@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 480px;
+    margin: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+    background: #f5f6f7;
+}
+
+/* 顶部 */
+.zhuohao {
+    background: linear-gradient(90deg, #18a060, #36c27d);
+    color: white;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* 布局 */
+.zuoyou {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+
+/* 左边菜单 */
+.container {
+    width: 100px;
+    background: #fafafa;
+    border-right: 1px solid #eee;
+}
+
+.tab {
+    padding: 16px 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    background: white;
+    color: #18a060;
+    font-weight: 600;
+    border-left: 3px solid #18a060;
+}
+
+/* 右边 */
+.neirongye {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.neirong {
+    display: none;
+}
+
+.neirong.active {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 🧾 卡片（重点优化） */
+.card {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.1s;
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+.card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.desc {
+    font-size: 12px;
+    color: #888;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    color: #18a060;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* ➕➖ 按钮 */
+.control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+button {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* + */
+.plus {
+    background: linear-gradient(135deg, #18a060, #36c27d);
+    color: white;
+}
+
+/* - */
+.minus {
+    background: #eee;
+}
+
+.minus {
+    visibility: hidden;
+}
+
+/* 🛒 浮动购物车（重点） */
+.cart-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #18a060, #36c27d);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 30px;
+    font-size: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* 红点 */
+.cart-count {
+    background: #ff3b30;
+    border-radius: 50%;
+    padding: 3px 7px;
+    font-size: 12px;
+    margin-left: 6px;
+}
+
+/* 🧾 购物车面板（高级感核心） */
+.cart-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 65%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    padding: 15px;
+    animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-footer {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 🛒 底部结算栏（高级感核心） */
+.cart-bar {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    height: 60px;
+    background: rgba(30, 30, 30, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    justify-content: space-between;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    color: white;
+}
+
+/* 左边 */
+.cart-left {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* 中间价格 */
+.cart-center {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 右边按钮 */
+.cart-right {
+    background: linear-gradient(135deg, #18a060, #36c27d);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+}
