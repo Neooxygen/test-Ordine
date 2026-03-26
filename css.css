@@ -482,3 +482,104 @@ button {
     background: linear-gradient(135deg, #ff9800, #ffb74d);
 }
 
+img {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+/* ======================
+   🧾 高级订单UI
+====================== */
+
+.order-history {
+  max-height: 160px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+
+/* 空状态 */
+.order-empty {
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+  padding: 10px 0;
+}
+
+/* 标题 */
+.order-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* 卡片 */
+.order-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 10px;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* 头部 */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.order-index {
+  font-size: 13px;
+  font-weight: 600;
+  color: #18a060;
+}
+
+.order-time {
+  font-size: 11px;
+  color: #aaa;
+}
+
+/* 菜品列表 */
+.order-items {
+  margin-bottom: 6px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 3px 0;
+  color: #444;
+}
+
+.order-item .name {
+  max-width: 70%;
+}
+
+.order-item .count {
+  color: #999;
+}
+
+/* 底部 */
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 6px;
+  padding-top: 6px;
+
+  border-top: 1px dashed #eee;
+  font-size: 13px;
+}
+
+.order-price {
+  font-weight: bold;
+  color: #18a060;
+  font-size: 14px;
+}

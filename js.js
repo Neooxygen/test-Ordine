@@ -18,6 +18,7 @@ tabs.forEach((tab, index) => {
 // 🛒 数据
 // ======================
 let cart = [];
+let orders = [];
 
 // ======================
 // 🍽 菜品 + -
@@ -216,7 +217,10 @@ cancelBtn.addEventListener('click', () => {
 
 okBtn.addEventListener('click', () => {
 
+    // ✅ 清空购物车数据
     cart = [];
+
+    // ✅ 更新UI
     updateCart();
     syncMenuCount();
 
@@ -253,11 +257,64 @@ function showToast(text, type = 'default') {
     }, 2000);
 }
 
+function renderOrders() {
+    const box = document.querySelector('.order-history');
+
+    if (orders.length === 0) {
+        box.innerHTML = `<div class="order-empty">还没有下单</div>`;
+        return;
+    }
+
+    box.innerHTML = `
+        <div class="order-title">
+            🧾 已点订单
+        </div>
+    `;
+
+    orders.forEach((order, index) => {
+
+        let total = 0;
+        let itemsHtml = '';
+
+        order.items.forEach(item => {
+            total += item.price * item.count;
+
+            itemsHtml += `
+                <div class="order-item">
+                    <span class="name">${item.name}</span>
+                    <span class="count">x${item.count}</span>
+                </div>
+            `;
+        });
+
+        box.innerHTML += `
+            <div class="order-card">
+                <div class="order-header">
+                    <span class="order-index">第 ${index + 1} 单</span>
+                    <span class="order-time">${order.time}</span>
+                </div>
+
+                <div class="order-items">
+                    ${itemsHtml}
+                </div>
+
+                <div class="order-footer">
+                    <span>小计</span>
+                    <span class="order-price">€${total.toFixed(2)}</span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+
+
 // ======================
 // ✅ 提交订单（🔥保证能用）
 // ======================
 document.querySelector('.submit-order').addEventListener('click', function (e) {
-    console.log('点了提交订单');   // ⭐ 加这一行
+
+    console.log('点了提交订单');
 
     e.stopPropagation();
 
@@ -266,8 +323,18 @@ document.querySelector('.submit-order').addEventListener('click', function (e) {
         return;
     }
 
+    // ✅ 保存订单
+    orders.push({
+        time: new Date().toLocaleTimeString(),
+        items: JSON.parse(JSON.stringify(cart))
+    });
+
+    // ✅ 显示到页面（关键）
+    renderOrders();
+
     showToast('✅ 下单成功', 'success');
 
+    // ✅ 清空当前购物车
     cart = [];
     updateCart();
     syncMenuCount();
@@ -308,3 +375,8 @@ document.addEventListener('click', function (e) {
         syncMenuCount();
     }
 });
+
+document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+});
+
