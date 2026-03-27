@@ -281,8 +281,16 @@ function renderOrders() {
 
             itemsHtml += `
                 <div class="order-item">
-                    <span class="name">${item.name}</span>
-                    <span class="count">x${item.count}</span>
+                    <img src="${item.img}" class="order-img">
+
+                    <div class="order-item-info">
+                        <div class="name">${item.name}</div>
+                        <div class="count">x${item.count}</div>
+                    </div>
+
+                    <div class="order-item-price">
+                        €${(item.price * item.count).toFixed(2)}
+                    </div>
                 </div>
             `;
         });
