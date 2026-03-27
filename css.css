@@ -378,23 +378,6 @@ button {
     }
 }
 
-/* 提交订单按钮 */
-.submit-order {
-    background: linear-gradient(135deg, #18a060, #36c27d);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    cursor: pointer;
-
-    /* ⭐ 核心修复 */
-    flex-shrink: 0;
-    white-space: nowrap;
-    min-width: 100px;
-    text-align: center;
-}
-
 /* footer布局优化 */
 .cart-footer {
     margin-top: 10px;
@@ -417,22 +400,34 @@ button {
     color: white;
     border: none;
 
-    padding: 10px 18px;
-    border-radius: 22px;
-    font-size: 14px;
+    /* ⭐ 关键：变大 */
+    height: 35px;
+    min-width: 140px;
+    padding: 0 24px;
+
+    border-radius: 24px;
+
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+
     cursor: pointer;
 
-    flex-shrink: 0;
-    min-width: 120px;
-
-    /* ⭐ 核心修复 */
     display: flex;
     align-items: center;
     justify-content: center;
 
-    letter-spacing: 1px;
-    /* 字更均匀 */
-    font-weight: 500;
+    flex-shrink: 0;
+
+    /* ⭐ 高级感 */
+    box-shadow: 0 6px 16px rgba(24, 160, 96, 0.25);
+    transition: all 0.2s ease;
+}
+
+/* 点击反馈（非常重要） */
+.submit-order:active {
+    transform: scale(0.96);
+    box-shadow: 0 3px 8px rgba(24, 160, 96, 0.2);
 }
 
 /* ======================
