@@ -55,6 +55,7 @@ body {
 .neirongye {
     flex: 1;
     padding: 10px;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
     overflow-y: auto;
 }
 
