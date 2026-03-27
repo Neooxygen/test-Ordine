@@ -265,11 +265,7 @@ function renderOrders() {
         return;
     }
 
-    box.innerHTML = `
-        <div class="order-title">
-            🧾 已点订单
-        </div>
-    `;
+    box.innerHTML = '';
 
     orders.forEach((order, index) => {
 
@@ -343,9 +339,14 @@ document.querySelector('.submit-order').addEventListener('click', function (e) {
     showToast('✅ 下单成功', 'success');
 
     // ✅ 清空当前购物车
+    // ✅ 清空当前购物车
     cart = [];
     updateCart();
     syncMenuCount();
+
+    // ✅ ⭐ 关闭购物车面板（关键）
+    cartPanel.style.display = 'none';
+    isOpen = false;
 });
 
 // ======================
@@ -388,3 +389,66 @@ document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
 });
 
+const orderPanel = document.querySelector('.order-panel');
+const orderBtn = document.querySelector('.order-btn');
+
+let orderOpen = false;
+
+// 打开订单
+orderBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    orderOpen = !orderOpen;
+    orderPanel.style.display = orderOpen ? 'flex' : 'none';
+
+    // 关闭购物车（避免冲突）
+    cartPanel.style.display = 'none';
+    isOpen = false;
+
+    renderOrders(); // ⭐ 每次打开刷新
+});
+
+// ======================
+// 📜 点击外部关闭订单面板
+// ======================
+document.addEventListener('click', function (e) {
+
+    if (!orderOpen) return;
+
+    const inside =
+        orderPanel.contains(e.target) ||
+        orderBtn.contains(e.target);
+
+    if (!inside) {
+        orderPanel.style.display = 'none';
+        orderOpen = false;
+    }
+});
+
+// ======================
+// 👨‍🍳 呼叫服务员
+// ======================
+// ======================
+// 👨‍🍳 呼叫服务员（防连点）
+// ======================
+
+const serviceBtn = document.querySelector('.service-btn');
+
+let called = false;
+
+serviceBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    if (called) {
+        showToast('服务员已在路上，请稍等～');
+        return;
+    }
+
+    called = true;
+
+    showToast('👨‍🍳 已呼叫服务员，请稍等', 'success');
+
+    setTimeout(() => {
+        called = false;
+    }, 10000);
+});
