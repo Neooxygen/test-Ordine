@@ -128,23 +128,7 @@ cartBar.addEventListener('click', () => {
     cartPanel.style.display = isOpen ? 'flex' : 'none';
 });
 
-// 点击外部关闭
-document.addEventListener('click', function (e) {
 
-    if (!isOpen) return;
-
-    const confirmBox = document.getElementById('confirmBox');
-
-    const inside =
-        cartPanel.contains(e.target) ||
-        cartBar.contains(e.target) ||
-        confirmBox.contains(e.target);
-
-    if (!inside) {
-        cartPanel.style.display = 'none';
-        isOpen = false;
-    }
-});
 
 // ======================
 // 🔄 同步菜单数量
@@ -451,4 +435,133 @@ serviceBtn.addEventListener('click', (e) => {
     setTimeout(() => {
         called = false;
     }, 10000);
+});
+
+// ======================
+// 👇 下滑关闭购物车（高级手势）
+// ======================
+let startY = 0;
+let currentY = 0;
+let isDragging = false;
+
+cartPanel.addEventListener('touchstart', (e) => {
+    if (!isOpen) return;
+
+    // ⭐ 如果点在列表里 → 不触发关闭逻辑
+    if (e.target.closest('.cart-items')) return;
+
+    startY = e.touches[0].clientY;
+    isDragging = true;
+
+    cartPanel.style.transition = 'none';
+}, { passive: false });
+
+
+cartPanel.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+
+    e.preventDefault(); // ⭐ 阻止页面下拉
+
+    currentY = e.touches[0].clientY;
+    let delta = currentY - startY;
+
+    if (delta > 0) {
+        cartPanel.style.transform = `translateY(${delta}px)`;
+    }
+}, { passive: false });
+
+
+cartPanel.addEventListener('touchend', () => {
+    if (!isDragging) return;
+
+    isDragging = false;
+
+    let delta = currentY - startY;
+
+    cartPanel.style.transition = 'all 0.3s ease';
+
+    if (delta > 100) {
+        cartPanel.style.transform = `translateY(100%)`;
+
+        setTimeout(() => {
+            cartPanel.style.display = 'none';
+            cartPanel.style.transform = '';
+            isOpen = false;
+        }, 300);
+    } else {
+        cartPanel.style.transform = `translateY(0)`;
+    }
+});
+
+// ======================
+// 🚫 终极滚动锁（唯一版本）
+// ======================
+document.addEventListener('touchmove', function (e) {
+
+    const allow =
+        e.target.closest('.neirongye') ||
+        e.target.closest('.cart-items') ||
+        e.target.closest('.cart-panel') ||
+        e.target.closest('.order-history');
+
+    if (!allow) {
+        e.preventDefault();
+    }
+
+}, { passive: false });
+
+// ======================
+// 📜 下滑关闭订单面板（复制购物车逻辑）
+// ======================
+let orderStartY = 0;
+let orderCurrentY = 0;
+let orderDragging = false;
+
+orderPanel.addEventListener('touchstart', (e) => {
+    if (!orderOpen) return;
+
+    // ⭐ 如果点在订单列表里 → 不触发关闭
+    if (e.target.closest('.order-history')) return;
+
+    orderStartY = e.touches[0].clientY;
+    orderDragging = true;
+
+    orderPanel.style.transition = 'none';
+}, { passive: false });
+
+
+orderPanel.addEventListener('touchmove', (e) => {
+    if (!orderDragging) return;
+
+    e.preventDefault();
+
+    orderCurrentY = e.touches[0].clientY;
+    let delta = orderCurrentY - orderStartY;
+
+    if (delta > 0) {
+        orderPanel.style.transform = `translateY(${delta}px)`;
+    }
+}, { passive: false });
+
+
+orderPanel.addEventListener('touchend', () => {
+    if (!orderDragging) return;
+
+    orderDragging = false;
+
+    let delta = orderCurrentY - orderStartY;
+
+    orderPanel.style.transition = 'all 0.3s ease';
+
+    if (delta > 100) {
+        orderPanel.style.transform = `translateY(100%)`;
+
+        setTimeout(() => {
+            orderPanel.style.display = 'none';
+            orderPanel.style.transform = '';
+            orderOpen = false;
+        }, 300);
+    } else {
+        orderPanel.style.transform = `translateY(0)`;
+    }
 });

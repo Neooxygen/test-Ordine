@@ -54,13 +54,19 @@ body {
 /* 右边 */
 .neirongye {
     flex: 1;
+    height: 100%;
     padding: 10px;
     padding-bottom: calc(80px + env(safe-area-inset-bottom));
     overflow-y: auto;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+    /* ⭐ 关键修复 */
 }
 
 .neirong {
     display: none;
+    overscroll-behavior: contain;
+    /* ⭐ 再锁一层（关键） */
 }
 
 .neirong.active {
@@ -217,7 +223,7 @@ button {
     gap: 10px;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
-    
+
 }
 
 .cart-items {
@@ -226,12 +232,15 @@ button {
     min-height: 0;
 
     /* ✅ 隐藏滚动条 */
-    scrollbar-width: none;       /* Firefox */
-    -ms-overflow-style: none;    /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
 }
 
 .cart-items::-webkit-scrollbar {
-    display: none;               /* Chrome / Safari */
+    display: none;
+    /* Chrome / Safari */
 }
 
 .cart-img {
@@ -455,7 +464,8 @@ button {
 
     /* ⭐ 关键修复 */
     opacity: 0;
-    display: block;   /* ✅ 必须加 */
+    display: block;
+    /* ✅ 必须加 */
     pointer-events: none;
 
     transition: all 0.3s ease;
@@ -479,8 +489,8 @@ button {
 }
 
 img {
-  -webkit-touch-callout: none;
-  user-select: none;
+    -webkit-touch-callout: none;
+    user-select: none;
 }
 
 /* ======================
@@ -488,122 +498,123 @@ img {
 ====================== */
 
 .order-history {
-  max-height: calc(70vh - 80px);
-  overflow-y: auto;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 /* 空状态 */
 .order-empty {
-  text-align: center;
-  font-size: 13px;
-  color: #999;
-  padding: 10px 0;
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    padding: 10px 0;
 }
 
 /* 标题 */
 .order-title {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
 }
 
 /* 卡片 */
 .order-card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 12px;
-  margin-bottom: 10px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
 
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-  border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 /* 头部 */
 .order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .order-index {
-  font-size: 13px;
-  font-weight: 600;
-  color: #18a060;
+    font-size: 13px;
+    font-weight: 600;
+    color: #18a060;
 }
 
 .order-time {
-  font-size: 11px;
-  color: #aaa;
+    font-size: 11px;
+    color: #aaa;
 }
 
 /* 菜品列表 */
 .order-items {
-  margin-bottom: 6px;
+    margin-bottom: 6px;
 }
 
 .order-item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  padding: 3px 0;
-  color: #444;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 3px 0;
+    color: #444;
 }
 
 .order-item .name {
-  max-width: 70%;
+    max-width: 70%;
 }
 
 .order-item .count {
-  color: #999;
+    color: #999;
 }
 
 /* 底部 */
 .order-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  margin-top: 6px;
-  padding-top: 6px;
+    margin-top: 6px;
+    padding-top: 6px;
 
-  border-top: 1px dashed #eee;
-  font-size: 13px;
+    border-top: 1px dashed #eee;
+    font-size: 13px;
 }
 
 .order-price {
-  font-weight: bold;
-  color: #18a060;
-  font-size: 14px;
+    font-weight: bold;
+    color: #18a060;
+    font-size: 14px;
 }
 
 /* 🧾 订单图片样式 */
 .order-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
 }
 
 .order-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  object-fit: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
 }
 
 .order-item-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-size: 13px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
 }
 
 .order-item-price {
-  font-size: 13px;
-  font-weight: 600;
-  color: #18a060;
+    font-size: 13px;
+    font-weight: 600;
+    color: #18a060;
 }
 
 /* 📜 订单面板 */
@@ -614,13 +625,13 @@ img {
     width: 100%;
     max-height: 70%;
 
-    background: rgba(255,255,255,0.95);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
 
     display: none;
     flex-direction: column;
@@ -631,7 +642,7 @@ img {
 
 /* 按钮 */
 .order-btn {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     padding: 8px 14px;
     border-radius: 20px;
     font-size: 14px;
@@ -655,5 +666,55 @@ img {
 /* 点击反馈 */
 .service-btn:active {
     transform: scale(0.95);
-    background: rgba(255,255,255,0.25);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.drag-bar {
+    width: 40px;
+    height: 5px;
+    background: #ddd;
+    border-radius: 10px;
+    margin: 0 auto 10px;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    /* ⭐ 禁止整个页面滚动 */
+    overscroll-behavior: none;
+    /* ⭐ 禁止下拉刷新 */
+}
+
+/* ⭐ 锁定触摸行为 */
+.cart-panel {
+    touch-action: pan-y;
+}
+
+/* ======================
+   🚫 全局禁止页面拖动（终极）
+====================== */
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+/* ✅ 只允许这个区域滚动 */
+.neirongye {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ✅ 再锁一层（防止子元素穿透） */
+.neirong {
+    overscroll-behavior: contain;
+}
+
+/* ✅ 购物车内部滚动 */
+.cart-items {
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
