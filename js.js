@@ -300,10 +300,7 @@ function renderOrders() {
 // ======================
 // ✅ 提交订单（🔥保证能用）
 // ======================
-document.querySelector('.submit-order').addEventListener('click', function (e) {
-
-    console.log('点了提交订单');
-
+document.querySelector('.submit-order').addEventListener('click', async function (e) {
     e.stopPropagation();
 
     if (cart.length === 0) {
@@ -311,26 +308,56 @@ document.querySelector('.submit-order').addEventListener('click', function (e) {
         return;
     }
 
-    // ✅ 保存订单
-    orders.push({
-        time: new Date().toLocaleTimeString(),
-        items: JSON.parse(JSON.stringify(cart))
-    });
+    const totalPrice = cart.reduce((sum, item) => {
+        return sum + item.price * item.count;
+    }, 0);
 
-    // ✅ 显示到页面（关键）
-    renderOrders();
+    const orderData = {
+        table_no: '001',
+        items: cart,
+        total_price: totalPrice
+    };
 
-    showToast('✅ 下单成功', 'success');
+    try {
+        const res = await fetch('https://test-ordine-backend.onrender.com/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
 
-    // ✅ 清空当前购物车
-    // ✅ 清空当前购物车
-    cart = [];
-    updateCart();
-    syncMenuCount();
+        const data = await res.json();
 
-    // ✅ ⭐ 关闭购物车面板（关键）
-    cartPanel.style.display = 'none';
-    isOpen = false;
+        if (data.success) {
+            orders.unshift({
+                time: new Date().toLocaleString(),
+                items: cart.map(item => ({
+                    name: item.name,
+                    price: item.price,
+                    count: item.count,
+                    img: item.img
+                }))
+            });
+
+            renderOrders();
+
+            showToast('✅ 下单成功', 'success');
+
+            cart = [];
+            updateCart();
+            syncMenuCount();
+
+            cartPanel.style.display = 'none';
+            isOpen = false;
+        } else {
+            showToast('❌ 下单失败', 'warning');
+        }
+
+    } catch (error) {
+        console.error(error);
+        showToast('❌ 无法连接后端', 'warning');
+    }
 });
 
 // ======================
