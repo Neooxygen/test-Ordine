@@ -19,6 +19,7 @@ tabs.forEach((tab, index) => {
 // ======================
 let cart = [];
 let orders = [];
+let orderSerial = 0;
 
 // ======================
 // 🍽 菜品 + -
@@ -278,7 +279,7 @@ function renderOrders() {
         box.innerHTML += `
             <div class="order-card">
                 <div class="order-header">
-                    <span class="order-index">第 ${index + 1} 单</span>
+                    <span class="order-index">第 ${order.no} 单</span>
                     <span class="order-time">${order.time}</span>
                 </div>
 
@@ -330,7 +331,10 @@ document.querySelector('.submit-order').addEventListener('click', async function
         const data = await res.json();
 
         if (data.success) {
+            orderSerial++;
+
             orders.unshift({
+                no: orderSerial,
                 time: new Date().toLocaleString(),
                 items: cart.map(item => ({
                     name: item.name,
