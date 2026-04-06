@@ -1,3 +1,14 @@
+
+
+function getTableNo() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('table') || '001'; // 默认001
+}
+const TABLE_NO = getTableNo();
+
+
+
+
 // ======================
 // 📂 分类切换
 // ======================
@@ -19,7 +30,6 @@ tabs.forEach((tab, index) => {
 // ======================
 let cart = [];
 let orders = [];
-let orderSerial = 0;
 
 // ======================
 // 🍽 菜品 + -
@@ -245,7 +255,7 @@ function showToast(text, type = 'default') {
 function renderOrders() {
     const box = document.querySelector('.order-history');
 
-    if (orders.length === 0) {
+    if (!orders || orders.length === 0) {
         box.innerHTML = `<div class="order-empty">还没有下单</div>`;
         return;
     }
@@ -253,13 +263,9 @@ function renderOrders() {
     box.innerHTML = '';
 
     orders.forEach((order, index) => {
-
-        let total = 0;
         let itemsHtml = '';
 
         order.items.forEach(item => {
-            total += item.price * item.count;
-
             itemsHtml += `
                 <div class="order-item">
                     <img src="${item.img}" class="order-img">
@@ -270,7 +276,7 @@ function renderOrders() {
                     </div>
 
                     <div class="order-item-price">
-                        €${(item.price * item.count).toFixed(2)}
+                        €${Number(item.price).toFixed(2)}
                     </div>
                 </div>
             `;
@@ -279,7 +285,7 @@ function renderOrders() {
         box.innerHTML += `
             <div class="order-card">
                 <div class="order-header">
-                    <span class="order-index">第 ${order.no} 单</span>
+                    <span class="order-index">订单 ${index + 1}</span>
                     <span class="order-time">${order.time}</span>
                 </div>
 
@@ -288,12 +294,28 @@ function renderOrders() {
                 </div>
 
                 <div class="order-footer">
-                    <span>小计</span>
-                    <span class="order-price">€${total.toFixed(2)}</span>
+                    <span>总价</span>
+                    <span class="order-price">€${Number(order.total_price).toFixed(2)}</span>
                 </div>
             </div>
         `;
     });
+}
+
+async function fetchOrders() {
+    try {
+        const res = await fetch('https://test-ordine-backend.onrender.com/api/orders');
+        const data = await res.json();
+
+        if (data.success) {
+            orders = data.orders || [];
+            renderOrders();
+        } else {
+            console.warn('获取订单失败');
+        }
+    } catch (error) {
+        console.error('读取订单失败:', error);
+    }
 }
 
 
@@ -314,7 +336,7 @@ document.querySelector('.submit-order').addEventListener('click', async function
     }, 0);
 
     const orderData = {
-        table_no: '001',
+        table_no: TABLE_NO,
         items: cart,
         total_price: totalPrice
     };
@@ -331,20 +353,7 @@ document.querySelector('.submit-order').addEventListener('click', async function
         const data = await res.json();
 
         if (data.success) {
-            orderSerial++;
-
-            orders.unshift({
-                no: orderSerial,
-                time: new Date().toLocaleString(),
-                items: cart.map(item => ({
-                    name: item.name,
-                    price: item.price,
-                    count: item.count,
-                    img: item.img
-                }))
-            });
-
-            renderOrders();
+            await fetchOrders();
 
             showToast('✅ 下单成功', 'success');
 
@@ -420,7 +429,9 @@ orderBtn.addEventListener('click', (e) => {
     cartPanel.style.display = 'none';
     isOpen = false;
 
-    renderOrders(); // ⭐ 每次打开刷新
+    if (orderOpen) {
+        fetchOrders();
+    }
 });
 
 // ======================
@@ -596,3 +607,15 @@ orderPanel.addEventListener('touchend', () => {
         orderPanel.style.transform = `translateY(0)`;
     }
 });
+
+
+
+function setTableTitle() {
+    const el = document.getElementById('tableTitle');
+    if (el) {
+        el.innerText = `Neo点餐系统-${TABLE_NO}号桌`;
+    }
+}
+
+fetchOrders();
+setTableTitle();
