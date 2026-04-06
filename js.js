@@ -354,8 +354,6 @@ document.querySelector('.submit-order').addEventListener('click', async function
         const data = await res.json();
 
         if (data.success) {
-            await fetchOrders();
-
             showToast('✅ 下单成功', 'success');
 
             cart = [];
@@ -364,6 +362,8 @@ document.querySelector('.submit-order').addEventListener('click', async function
 
             cartPanel.style.display = 'none';
             isOpen = false;
+
+            fetchOrders(); // 不要 await
         } else {
             showToast('❌ 下单失败', 'warning');
         }
