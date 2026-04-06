@@ -308,7 +308,8 @@ async function fetchOrders() {
         const data = await res.json();
 
         if (data.success) {
-            orders = data.orders || [];
+            const allOrders = data.orders || [];
+            orders = allOrders.filter(order => String(order.table_no) === String(TABLE_NO));
             renderOrders();
         } else {
             console.warn('获取订单失败');
