@@ -30,6 +30,7 @@ tabs.forEach((tab, index) => {
 // ======================
 let cart = [];
 let orders = [];
+let isSubmitting = false;
 
 // ======================
 // 🍽 菜品 + -
@@ -327,10 +328,15 @@ async function fetchOrders() {
 document.querySelector('.submit-order').addEventListener('click', async function (e) {
     e.stopPropagation();
 
+    // ✅ 防止连续点击重复下单
+    if (isSubmitting) return;
+
     if (cart.length === 0) {
         showToast('⚠️ 请先选择菜品', 'warning');
         return;
     }
+
+    isSubmitting = true;
 
     const totalPrice = cart.reduce((sum, item) => {
         return sum + item.price * item.count;
@@ -371,6 +377,9 @@ document.querySelector('.submit-order').addEventListener('click', async function
     } catch (error) {
         console.error(error);
         showToast('❌ 无法连接后端', 'warning');
+    } finally {
+        // ✅ 请求结束后，恢复可提交状态
+        isSubmitting = false;
     }
 });
 
