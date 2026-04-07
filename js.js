@@ -363,6 +363,20 @@ document.querySelector('.submit-order').addEventListener('click', async function
         const data = await res.json();
 
         if (data.success) {
+            // ✅ 先把这次新订单立刻插到最前面，避免 fetchOrders 慢时看不到
+            if (data.order) {
+                const newOrder = data.order;
+
+                // 只保留当前桌、且未完成的订单
+                if (
+                    String(newOrder.table_no) === String(TABLE_NO) &&
+                    newOrder.status !== 'done'
+                ) {
+                    orders.unshift(newOrder);
+                    renderOrders();
+                }
+            }
+
             showToast('✅ 下单成功', 'success');
 
             cart = [];
@@ -372,7 +386,8 @@ document.querySelector('.submit-order').addEventListener('click', async function
             cartPanel.style.display = 'none';
             isOpen = false;
 
-            fetchOrders(); // 不要 await
+            // ✅ 后台再同步一次，避免前后端数据有细微差异
+            fetchOrders();
         } else {
             showToast('❌ 下单失败', 'warning');
         }
