@@ -480,17 +480,13 @@ document.addEventListener('click', function (e) {
 });
 
 // ======================
-// 👨‍🍳 呼叫服务员
+// 👨‍🍳 呼叫服务员（发送到后端 + 防连点）
 // ======================
-// ======================
-// 👨‍🍳 呼叫服务员（防连点）
-// ======================
-
 const serviceBtn = document.querySelector('.service-btn');
 
 let called = false;
 
-serviceBtn.addEventListener('click', (e) => {
+serviceBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
 
     if (called) {
@@ -500,7 +496,33 @@ serviceBtn.addEventListener('click', (e) => {
 
     called = true;
 
-    showToast('👨‍🍳 已呼叫服务员，请稍等', 'success');
+    try {
+        const res = await fetch('https://test-ordine-backend.onrender.com/api/service-call', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                table_no: TABLE_NO
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            showToast(`👨‍🍳 ${TABLE_NO}号桌已呼叫服务员`, 'success');
+        } else {
+            showToast('❌ 呼叫失败，请稍后重试', 'warning');
+            called = false;
+            return;
+        }
+
+    } catch (error) {
+        console.error('呼叫服务员失败:', error);
+        showToast('❌ 无法连接后端', 'warning');
+        called = false;
+        return;
+    }
 
     setTimeout(() => {
         called = false;
