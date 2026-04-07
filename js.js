@@ -310,7 +310,10 @@ async function fetchOrders() {
 
         if (data.success) {
             const allOrders = data.orders || [];
-            orders = allOrders.filter(order => String(order.table_no) === String(TABLE_NO));
+            orders = allOrders.filter(order =>
+                String(order.table_no) === String(TABLE_NO) &&
+                order.status !== 'done'
+            );
             renderOrders();
         } else {
             console.warn('获取订单失败');
