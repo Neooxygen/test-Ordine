@@ -263,6 +263,8 @@ function renderOrders() {
 
     box.innerHTML = '';
 
+    const totalOrders = orders.length;
+
     orders.forEach((order, index) => {
         let itemsHtml = '';
 
@@ -283,10 +285,15 @@ function renderOrders() {
             `;
         });
 
+        // 关键：
+        // orders[0] 是最新订单，但它应该显示“订单 totalOrders”
+        // orders[totalOrders - 1] 是最早订单，它应该显示“订单 1”
+        const displayOrderNo = totalOrders - index;
+
         box.innerHTML += `
             <div class="order-card">
                 <div class="order-header">
-                    <span class="order-index">订单 ${index + 1}</span>
+                    <span class="order-index">订单 ${displayOrderNo}</span>
                     <span class="order-time">${order.time}</span>
                 </div>
 
