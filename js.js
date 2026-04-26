@@ -319,7 +319,8 @@ async function fetchOrders() {
             const allOrders = data.orders || [];
             orders = allOrders.filter(order =>
                 String(order.table_no) === String(TABLE_NO) &&
-                order.status !== 'done'
+                order.status !== 'done' &&
+                order.status !== 'cancelled'
             );
             renderOrders();
         } else {
@@ -377,7 +378,8 @@ document.querySelector('.submit-order').addEventListener('click', async function
                 // 只保留当前桌、且未完成的订单
                 if (
                     String(newOrder.table_no) === String(TABLE_NO) &&
-                    newOrder.status !== 'done'
+                    newOrder.status !== 'done' &&
+                    newOrder.status !== 'cancelled'
                 ) {
                     orders.unshift(newOrder);
                     renderOrders();
